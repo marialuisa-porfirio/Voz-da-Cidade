@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Voz da Cidade BH</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main" data-i="skip">Pular para o conteúdo</a>
+<header>
+  <button class="brand" data-go="home" aria-label="Voz da Cidade BH"><span class="logo" aria-hidden="true"><b>BH</b></span>Voz da Cidade</button>
+  <nav aria-label="Menu principal">
+    <button id="navApp" data-go="app" data-i="nApp" hidden>Ocorrências</button>
+    <button id="btnHelp" data-open="dHelp" data-i="nHelp">Ajuda</button>
+    <button id="btnA11y" data-open="dA11y" data-i="nA11y">Acessibilidade</button>
+    <button id="btnAuth" class="pri"></button>
+  </nav>
+</header>
+
+<main id="main" tabindex="-1">
+<p id="cfgWarn" class="warn" role="alert" hidden></p>
+<noscript>Este site precisa de JavaScript para funcionar.</noscript>
+
+<section id="home" class="view">
+  <div class="hero">
+    <h1 data-i="hT">Viu um problema na rua? Conte para a cidade.</h1>
+    <p data-i="hP"></p>
+    <div class="row">
+      <button class="pri" data-go="auth" data-mode="signup" data-i="hCta">Criar minha conta</button>
+      <button data-open="dHelp" data-i="hHow">Como funciona</button>
+    </div>
+    <div class="legend" aria-label="Legenda"><span class="c1"><i class="dot"></i><span data-i="u1"></span></span><span class="c2"><i class="dot"></i><span data-i="u2"></span></span><span class="c3"><i class="dot"></i><span data-i="u3"></span></span></div>
+  </div>
+  <ol class="steps">
+    <li><h3 data-i="s1t"></h3><p data-i="s1p"></p></li>
+    <li><h3 data-i="s2t"></h3><p data-i="s2p"></p></li>
+    <li><h3 data-i="s3t"></h3><p data-i="s3p"></p></li>
+  </ol>
+  <p class="note" data-i="note"></p>
+</section>
+
+<section id="auth" class="view" hidden>
+  <form id="af" class="card auth" novalidate>
+    <h2 id="aT"></h2>
+    <label for="id" data-i="aId"></label>
+    <input id="id" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" data-ip="aIdH">
+    <label for="pw" data-i="aPw"></label>
+    <input id="pw" type="password">
+    <div id="row2"><label for="pw2" data-i="aPw2"></label><input id="pw2" type="password" autocomplete="new-password"></div>
+    <label class="chk"><input type="checkbox" id="show"> <span data-i="aShow"></span></label>
+    <p id="aerr" class="err" role="alert"></p>
+    <div class="row"><button class="pri" id="aGo"></button><button type="button" class="lnk" id="aSw"></button></div>
+  </form>
+</section>
+
+<section id="app" class="view" hidden>
+  <div class="grid">
+    <form id="f" class="card" novalidate>
+      <h2 data-i="fT"></h2>
+      <label for="cat" data-i="fCat"></label>
+      <select id="cat">
+        <option value="" data-i="sel"></option>
+        <option value="c1" data-i="c1"></option><option value="c2" data-i="c2"></option><option value="c3" data-i="c3"></option>
+        <option value="c4" data-i="c4"></option><option value="c5" data-i="c5"></option><option value="c6" data-i="c6"></option><option value="c7" data-i="c7"></option>
+      </select>
+      <label for="desc" data-i="fDesc"></label>
+      <textarea id="desc" rows="4" maxlength="500"></textarea>
+      <label for="addr" data-i="fAddr"></label>
+      <input id="addr" type="text" autocomplete="off" data-ip="fAddrH">
+      <div class="row" style="margin-top:.5rem">
+        <button type="button" id="bSearch" data-i="fSearch"></button>
+        <button type="button" id="bGeo" data-i="fGeo"></button>
+      </div>
+      <p id="coord" class="hint" aria-live="polite"></p>
+      <fieldset>
+        <legend data-i="fUrg"></legend>
+        <label class="urg c1"><input type="radio" name="urg" value="1"><span><i class="dot"></i><b data-i="u1"></b></span></label>
+        <label class="urg c2"><input type="radio" name="urg" value="2"><span><i class="dot"></i><b data-i="u2"></b></span></label>
+        <label class="urg c3"><input type="radio" name="urg" value="3"><span><i class="dot"></i><b data-i="u3"></b></span></label>
+      </fieldset>
+      <fieldset>
+        <legend data-i="fPhoto"></legend>
+        <div class="row">
+          <button type="button" id="bCam" data-i="fCam"></button>
+          <button type="button" id="bGal" data-i="fGal"></button>
+        </div>
+        <input type="file" id="inCam" accept="image/*" capture="environment" hidden>
+        <input type="file" id="inGal" accept="image/*" hidden>
+        <p class="hint" data-i="fPhH"></p>
+        <div id="prev" hidden>
+          <img id="prevImg" alt="">
+          <button type="button" id="bRm" data-i="fRm"></button>
+        </div>
+      </fieldset>
+      <p id="err" class="err" role="alert"></p>
+      <button class="pri" style="width:100%" data-i="fSend"></button>
+    </form>
+    <div class="mapcol">
+      <div id="map" role="region" aria-label="Mapa de Belo Horizonte"></div>
+      <div class="legend" aria-label="Legenda">
+        <span class="c1"><i class="dot"></i><span data-i="u1"></span></span>
+        <span class="c2"><i class="dot"></i><span data-i="u2"></span></span>
+        <span class="c3"><i class="dot"></i><span data-i="u3"></span></span>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="justify-content:space-between;margin-top:1.5rem">
+    <h2 style="margin:0" data-i="lT"></h2>
+    <select id="flt" style="width:auto" aria-label="Filtro">
+      <option value="" data-i="lAll"></option><option value="1" data-i="u1"></option><option value="2" data-i="u2"></option><option value="3" data-i="u3"></option>
+    </select>
+  </div>
+  <ul id="list"></ul>
+</section>
+</main>
+
+<div id="toast" role="status"></div>
+
+<dialog id="dHelp" aria-labelledby="hpT">
+  <h2 id="hpT" data-i="nHelp"></h2>
+  <ol><li data-i="hp1"></li><li data-i="hp2"></li><li data-i="hp3"></li><li data-i="hp4"></li><li data-i="hp5"></li></ol>
+  <details><summary data-i="q1"></summary><p data-i="a1"></p></details>
+  <details><summary data-i="q2"></summary><p data-i="a2"></p></details>
+  <details><summary data-i="q3"></summary><p data-i="a3"></p></details>
+  <p class="note" data-i="note"></p>
+  <button class="pri" data-close data-i="close"></button>
+</dialog>
+
+<dialog id="dA11y" aria-labelledby="aaT">
+  <h2 id="aaT" data-i="nA11y"></h2>
+  <label for="sLang" data-i="aaLang"></label>
+  <select id="sLang"><option value="pt">Português</option><option value="en">English</option></select>
+  <label for="sFont" data-i="aaFont"></label>
+  <select id="sFont"><option value="sans" data-i="fn1"></option><option value="serif" data-i="fn2"></option><option value="legible" data-i="fn3"></option></select>
+  <span class="lb" id="szL" data-i="aaSize"></span>
+  <div class="row" role="group" aria-labelledby="szL"><button id="fMinus" data-i="fMin"></button><output id="fVal" aria-live="polite"></output><button id="fPlus" data-i="fMax"></button></div>
+  <label class="chk"><input type="checkbox" id="sDark"> <span data-i="aaDark"></span></label>
+  <label class="chk"><input type="checkbox" id="sHc"> <span data-i="aaHc"></span></label>
+  <label class="chk"><input type="checkbox" id="sRm"> <span data-i="aaRm"></span></label>
+  <div id="tts" class="row"><button id="sRead" data-i="aaRead"></button><button id="sStop" data-i="aaStop"></button></div>
+  <p><button class="pri" data-close data-i="close"></button></p>
+</dialog>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
